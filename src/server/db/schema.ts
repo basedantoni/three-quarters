@@ -3,11 +3,13 @@ import {
   index,
   integer,
   pgTableCreator,
+  pgEnum,
   primaryKey,
   serial,
   text,
   timestamp,
   varchar,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -19,24 +21,61 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `three-quarters_${name}`);
 
-export const posts = createTable(
-  "post",
+const difficultyEnum = pgEnum("difficulty", ["medium", "hard"]);
+
+export const challenges = createTable(
+  "challenge",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdById: varchar("createdById", { length: 255 })
+    type: varchar("type", { length: 255 }).notNull(),
+    userId: varchar("user_id", { length: 255 })
       .notNull()
       .references(() => users.id),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
-  },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+  }
+)
+
+export const entries = createTable(
+  "entry",
+  {
+    id: serial("id").primaryKey(),
+    challengeId: serial("user_id")
+      .notNull()
+      .references(() => challenges.id),
+    indoorWorkout: varchar("indoor_workout").notNull(),
+    outdoorWorkout: varchar("outdoor_workout"),
+    drankWater: boolean("drank_water"),
+    followedDiet: boolean("followed_diet"),
+    completed: boolean("completed"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+  }
+)
+
+export const books = createTable(
+  "book",
+  {
+    id: serial("id").primaryKey(),
+    title: varchar("title", { length: 255 }).notNull(),
+    author: varchar("author", { length: 255 }),
+    currentlyReading: boolean("currently_reading"),
+    entryId: serial("entry_id")
+      .notNull()
+      .references(() => entries.id),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+    deletedAt: timestamp("deleted_at", { withTimezone: true }),
+  }
+)
 
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),

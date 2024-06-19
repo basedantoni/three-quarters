@@ -2,7 +2,7 @@
 
 ## Todo
 
-- [ ] Setup Database
+- [x] Setup Database
 - [ ] Setup Auth
 - [ ] Create intro sequence
 - [ ] Basic Challenge CRUD
