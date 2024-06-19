@@ -3,7 +3,8 @@
 ## Todo
 
 - [x] Setup Database
-- [ ] Setup Auth
+- [x] Setup Auth
+- [ ] Build auth pages
 - [ ] Create intro sequence
 - [ ] Basic Challenge CRUD
 - [ ] Create dashboard
