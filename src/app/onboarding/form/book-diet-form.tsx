@@ -30,7 +30,8 @@ const initialValues = {
     diet: "",
 }
 
-const searchParams = useSearchParams()
+export default function BookDietForm() {
+    const searchParams = useSearchParams()
 
     const difficulty = searchParams.get('difficulty')
     initialValues.type = difficulty || "hard"
@@ -51,7 +52,6 @@ const searchParams = useSearchParams()
       }
     }, [formState?.errors]);
 
-export default function BookDietForm() {
   return (
     <Card className='p-6'>
           <form name="entry" action={formAction} className="flex flex-col gap-4">
