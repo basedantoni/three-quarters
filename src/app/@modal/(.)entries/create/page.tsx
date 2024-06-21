@@ -41,13 +41,12 @@ export default function EntryCreateModal() {
     });
 
     useEffect(() => {
-      console.log(formState?.errors);
-      if (Array.isArray(formState?.errors)) {
-        // Check if formState.errors is an array before iterating
-        formState.errors.forEach((error) => {
-          form.setError(error.field, { message: error.message });
-        });
-      }
+        if (Array.isArray(formState?.errors)) {
+            // Check if formState.errors is an array before iterating
+            formState.errors.forEach((error) => {
+            form.setError(error.field, { message: error.message });
+            });
+        }
     }, [formState?.errors]);
 
     const handleUpload = () => {
@@ -60,7 +59,7 @@ export default function EntryCreateModal() {
                 <div className="flex flex-col gap-2">
                     <Label htmlFor="indoorWorkout">Indoor Workout:</Label>
                     <Input 
-                        className={formState?.errors?.outdoorWorkout ? 'border-red-500' : ''} 
+                        className={formState?.errors?.indoorWorkout ? 'border-red-500' : ''} 
                         type="text" 
                         id="indoorWorkout" 
                         name="indoorWorkout" 

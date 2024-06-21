@@ -29,7 +29,7 @@ export const authConfig = {
     }),
     authorized: ({ auth, request: { nextUrl } }) => {
       const isLoggedIn = !!auth?.user
-      const paths = ["/me", "/entries"]
+      const paths = ["/me", "/entries", "/onboarding"]
       const isProtected = paths.some(path => nextUrl.pathname.startsWith(path))
 
       if (isProtected && !isLoggedIn) {

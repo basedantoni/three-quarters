@@ -19,7 +19,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `three-quarters_${name}`);
+export const createTable = pgTableCreator((name) => `tq_${name}`);
 
 const difficultyEnum = pgEnum("difficulty", ["medium", "hard"]);
 
@@ -65,10 +65,10 @@ export const books = createTable(
     id: serial("id").primaryKey(),
     title: varchar("title", { length: 255 }).notNull(),
     author: varchar("author", { length: 255 }),
-    currentlyReading: boolean("currently_reading"),
-    entryId: serial("entry_id")
+    currentlyReading: boolean("currently_reading").notNull(),
+    challengeId: serial("challenge_id")
       .notNull()
-      .references(() => entries.id),
+      .references(() => challenges.id),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),

@@ -14,6 +14,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
   modal: React.ReactNode;
+  onboarding: React.ReactNode;
 }) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>

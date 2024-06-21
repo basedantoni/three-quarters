@@ -7,3 +7,8 @@ export const createEntrySchema = z.object({
     drankWater: z.boolean(),
     followedDiet: z.boolean(),
 })
+
+export const createChallengeAndBookSchema = z.object({
+    book: z.string().trim().min(1).max(255),
+    diet: z.string().trim().min(1).max(255),
+})
