@@ -6,7 +6,7 @@ export default function OnboardingPage() {
     return (
         <div className="flex flex-col px-7 py-10">
             <Image
-                src="/placeholder.svg"
+                src="/placeholder-02.png"
                 alt="onbboarding"
                 width={0}
                 height={0}
