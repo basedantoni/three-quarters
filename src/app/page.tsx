@@ -22,7 +22,7 @@ export default async function HomePage() {
   }
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center px-5">
+    <main className="relative flex min-h-screen flex-col items-center py-8 px-5 justify-between">
       <div className="flex flex-col items-center gap-5 mt-12">
         <h1 className="text-2xl font-bold">hello.</h1>
         <Card className="w-full max-w-[350px] flex flex-wrap gap-3.5 px-5 py-7 items-center justify-center">
@@ -33,7 +33,7 @@ export default async function HomePage() {
           })}
         </Card>
       </div>
-      <Button className="absolute bottom-4" asChild size={"round"}>
+      <Button asChild size={"round"}>
         <Link href="/entries/create">+</Link>
       </Button>
     </main>
