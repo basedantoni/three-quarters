@@ -9,5 +9,5 @@
 - [x] Create intro sequence
 - [x] Basic Challenge CRUD
 - [x] Create dashboard
-- [ ] Basic Entry CRUD
+- [x] Basic Entry CRUD
 - [ ] Entry Pages

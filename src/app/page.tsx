@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getLatestChallenge, getEntryCount } from "@/server/db/query";
+import { getLatestChallenge, getEntryCount, getLatestEntry } from "@/server/db/query";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/server/auth";
+import { CircleCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -20,10 +21,35 @@ export default async function HomePage() {
     redirect("/onboarding");
   }
 
+  function getYesterdaysDate() {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    return yesterday;
+  }
+
+  
+  const entry = await getLatestEntry(challenge[0].id);
+  let lastEntryDate: Date;
+
+  if (!Array.isArray(entry) || entry.length <= 0 || !entry[0]) {
+    lastEntryDate = getYesterdaysDate();
+  } else {
+    lastEntryDate = new Date(entry[0].createdAt);
+  }
+
+  function isSameDayUTC(date1: Date, date2: Date) {
+    return (
+      date1.getUTCFullYear() === date2.getUTCFullYear() &&
+      date1.getUTCMonth() === date2.getUTCMonth() &&
+      date1.getUTCDate() === date2.getUTCDate()
+    );
+  }
+
   const entryCountResult = await getEntryCount(challenge[0].id);
   const entryCount = entryCountResult?.[0]?.count ?? 0; // Default to 0 if undefined
-  const dots = Array(75).fill(0);
 
+  const dots = Array(75).fill(0);
   for (let i = 0; i < entryCount; i++) {
     dots[i] = 1;
   }
@@ -40,9 +66,17 @@ export default async function HomePage() {
           })}
         </Card>
       </div>
-      <Button asChild size={"round"}>
-        <Link href={`/entries/create?challenge=${challenge[0].id}`}>+</Link>
-      </Button>
+      {isSameDayUTC(lastEntryDate, new Date()) 
+        ? 
+        <div className="flex gap-2 items-center">
+          <p className="text-lg">You completed todays challenge</p>
+          <CircleCheck className="h-4 w-4" />
+        </div>
+        :
+        <Button asChild size={"round"}>
+          <Link href={`/entries/create?challenge=${challenge[0].id}`}>+</Link>
+        </Button>
+      }
     </main>
   );
 }
