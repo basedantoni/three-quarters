@@ -6,8 +6,9 @@ import { entries, challenges, books } from './db/schema';
 import { db } from './db';
 import { auth } from './auth';
 import { redirect } from 'next/navigation';
+import { eq } from 'drizzle-orm';
 
-export async function createEntry(formState: any, formData: FormData) {
+export async function createEntry(challengeId: number, prevState: any, formData: FormData) {
     const parse = createEntrySchema.safeParse({
         indoorWorkout: formData.get('indoorWorkout'),
         outdoorWorkout: formData.get('outdoorWorkout'),
@@ -18,27 +19,29 @@ export async function createEntry(formState: any, formData: FormData) {
 
     if (parse.success) {
         const newEntry = {
-            challengeId: 1, // replace with a valid challenge ID
+            challengeId: challengeId,
             indoorWorkout: parse.data.indoorWorkout,
             outdoorWorkout: parse.data.outdoorWorkout,
             drankWater: parse.data.drankWater,
             followedDiet: parse.data.followedDiet,
             completed: true,
         };
-        await db.insert(entries).values(newEntry)
+        const entry = await db.insert(entries).values(newEntry).returning({ id: entries.id })
 
         revalidatePath("/")
-        redirect("/")
         return { 
+            message: "success",
             errors: undefined,
             indoorWorkout: "",
             outdoorWorkout: "",
             pagesRead: 0,
             drankWater: false,
             followedDiet: false,
+            entryId: entry[0] ? entry[0].id : 0,
         }
     } else {
         return {
+            message: "error",
             errors: parse?.error?.flatten().fieldErrors,
             indoorWorkout: "",
             outdoorWorkout: "",
@@ -105,3 +108,7 @@ export async function createChallengeAndBook(formState: any, formData: FormData)
         }
     }
 }   
+
+export async function addEntryProgressPicture(entryId: number, url: string) {
+    await db.update(entries).set({ progressUrl: url }).where(eq(entries.id, entryId))
+}

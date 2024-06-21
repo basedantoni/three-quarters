@@ -3,11 +3,18 @@ import { Card } from "@/components/ui/card";
 import { getLatestChallenge, getEntryCount } from "@/server/db/query";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/server/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const challenge = await getLatestChallenge();
+  const session = await auth()
+
+  if (!session?.user) {
+    redirect("/onboarding");
+  }
+
+  const challenge = await getLatestChallenge(session.user.id);
 
   if (!Array.isArray(challenge) || challenge.length <= 0 || !challenge[0]) {
     redirect("/onboarding");
@@ -34,7 +41,7 @@ export default async function HomePage() {
         </Card>
       </div>
       <Button asChild size={"round"}>
-        <Link href="/entries/create">+</Link>
+        <Link href={`/entries/create?challenge=${challenge[0].id}`}>+</Link>
       </Button>
     </main>
   );

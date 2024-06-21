@@ -1,19 +1,20 @@
 "use client"
 
-import { Modal } from "@/app/@modal/(.)entries/modal";
+import Modal from "@/app/@modal/(.)entries/modal";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createEntry } from "@/server/actions";
-import { FileUp } from "lucide-react";
-import { useEffect } from "react";
+import { addEntryProgressPicture, createEntry } from "@/server/actions";
+import { useEffect, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { useFormState } from "react-dom";
 import { createEntrySchema } from "@/server/validation";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from "react-hook-form";
+import { UploadButton } from "@/utils/uploadthing";
 import { z } from "zod";
+import { useSearchParams } from "next/navigation";
   
 const SubmitButton = () => {
   const { pending } = useFormStatus();
@@ -24,38 +25,48 @@ const SubmitButton = () => {
 };
 
 const initialValues = {
+    message: "",
     errors: undefined,
     indoorWorkout: "",
     outdoorWorkout: "",
     pagesRead: 0,
     drankWater: false,
     followedDiet: false,
+    entryId: 0,
 }
 
 export default function EntryCreateModal() {
-    const [formState, formAction] = useFormState(createEntry, initialValues);
+    const searchParams = useSearchParams()
+    const id = searchParams.get('challenge')
+
+    const createEntryWithId = createEntry.bind(null, Number(id))
+
+    const [formState, formAction] = useFormState(createEntryWithId, initialValues);
+    const [step, setStep] = useState(1)
 
     const form = useForm<z.infer<typeof createEntrySchema>>({
       resolver: zodResolver(createEntrySchema),
       defaultValues: initialValues,
     });
 
+    const formRef = useRef<HTMLFormElement>(null);
+    const modalRef = useRef<any>(null);
+
     useEffect(() => {
-        if (Array.isArray(formState?.errors)) {
+        if (formState?.message === "success") {
+            formRef.current?.reset();
+            setStep(2)
+        } else if (Array.isArray(formState?.errors)) {
             // Check if formState.errors is an array before iterating
             formState.errors.forEach((error) => {
             form.setError(error.field, { message: error.message });
             });
         }
-    }, [formState?.errors]);
-
-    const handleUpload = () => {
-        console.log("Upload");
-    }
+    }, [formState]);
 
     return (
-        <Modal {...form}>
-            <form name="entry" action={formAction} className="flex flex-col gap-4">
+        <Modal ref={modalRef} {...form}>
+            {step === 1 && <form name="entry" ref={formRef} action={formAction} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                     <Label htmlFor="indoorWorkout">Indoor Workout:</Label>
                     <Input 
@@ -109,17 +120,33 @@ export default function EntryCreateModal() {
                         </label>
                     </div>
                 </div>
-                <Button 
-                    onClick={() => handleUpload()} 
-                    className="gap-1" 
-                    variant="secondary"
-                    type="button"
-                >
-                        <span>Upload Progress</span> 
-                        <FileUp className="h-4 w-4" />
-                </Button>
                 <SubmitButton />
-            </form>
+            </form>}
+
+            {step === 2 && 
+                <div className="flex flex-col gap-2">
+                    <label
+                        htmlFor="progress"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Upload Progress:
+                    </label>
+                    <UploadButton
+                        className="ut-button:inline-flex ut-button:items-center ut-button:justify-center ut-button:whitespace-nowrap ut-button:rounded-md ut-button:text-sm ut-button:font-medium ut-button:ring-offset-white ut-button:transition-colors ut-button:focus-visible:outline-none ut-button:focus-visible:ring-2 ut-button:focus-visible:ring-gray-950 ut-button:focus-visible:ring-offset-2 ut-button:disabled:pointer-events-none ut-button:disabled:opacity-50 ut-button:dark:ring-offset-gray-950 ut-button:dark:focus-visible:ring-gray-300 ut-button:w-full ut-button:bg-gray-100 ut-button:text-gray-900 ut-button:hover:bg-gray-100/80 ut-button:dark:bg-gray-800 ut-button:dark:text-gray-50 ut-button:dark:hover:bg-gray-800/80 ut-button:gap-1"
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                            // Do something with the response
+                            if (!res[0]) return;
+                            addEntryProgressPicture(formState?.entryId ? formState.entryId : 0, res[0].url)
+                            modalRef.current.dismiss();
+                        }}
+                        onUploadError={(error: Error) => {
+                            // Do something with the error.
+                            alert(`ERROR! ${error.message}`);
+                        }}
+                    />
+                </div>
+            }
         </Modal>
     );
 }

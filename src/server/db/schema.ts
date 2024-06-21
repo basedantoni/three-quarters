@@ -50,6 +50,7 @@ export const entries = createTable(
     outdoorWorkout: varchar("outdoor_workout"),
     drankWater: boolean("drank_water"),
     followedDiet: boolean("followed_diet"),
+    progressUrl: varchar("progress_url", { length: 1024 }),
     completed: boolean("completed"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

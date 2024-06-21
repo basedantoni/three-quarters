@@ -10,6 +10,6 @@ export const getEntryCount = async (challengeId: number) => {
 }
 
 // Challenges
-export const getLatestChallenge = async () => {
-    return await db.select().from(challenges).orderBy(desc(challenges.createdAt)).limit(1)
+export const getLatestChallenge = async (userId: string) => {
+    return await db.select().from(challenges).where(eq(challenges.userId, userId)).orderBy(desc(challenges.createdAt)).limit(1)
 }
