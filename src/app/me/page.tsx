@@ -7,7 +7,7 @@ export default function Me() {
       Hello
       <SignOutButton signOut={async () => {
         "use server"
-        await signOut({redirectTo: "/"})
+        await signOut({redirectTo: "/auth/login"})
       }} />
     </main>
   );

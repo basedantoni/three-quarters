@@ -43,7 +43,7 @@ export const entries = createTable(
   "entry",
   {
     id: serial("id").primaryKey(),
-    challengeId: serial("user_id")
+    challengeId: serial("challenge_id")
       .notNull()
       .references(() => challenges.id),
     indoorWorkout: varchar("indoor_workout").notNull(),

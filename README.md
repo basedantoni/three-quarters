@@ -4,6 +4,7 @@
 
 - [x] Setup Database
 - [x] Setup Auth
+- [x] Add Shadcn
 - [ ] Build auth pages
 - [ ] Create intro sequence
 - [ ] Basic Challenge CRUD
