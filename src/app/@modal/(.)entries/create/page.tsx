@@ -100,21 +100,21 @@ export default function EntryCreateModal() {
                     />
                     <p className="text-sm text-red-500">{formState?.errors?.pagesRead}</p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
+                    <div className="flex items-center gap-0.5">
                         <Checkbox id="drankWater" name="drankWater" />
                         <label
                             htmlFor="drankWater"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                            Drank Water (1 Gallon)
+                            Drank Water
                         </label>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-0.5">
                         <Checkbox id="followedDiet" name="followedDiet" />
                         <label
                             htmlFor="followedDiet"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
                             Followed Diet
                         </label>

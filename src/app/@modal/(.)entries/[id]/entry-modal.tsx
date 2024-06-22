@@ -20,23 +20,23 @@ export default function EntryModal({ entry }: { entry: Entry }) {
         </div>
         <div className="flex flex-col gap-1">
             <Label>Indoor Workout</Label>
-            <p className="text-sm text-gray-700">{entry.indoorWorkout}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-400">{entry.indoorWorkout}</p>
         </div>
         <div className="flex flex-col gap-1">
             <Label>Outdoor Workout</Label>
-            <p className="text-sm text-gray-700">{entry.outdoorWorkout}</p>
+            <p className="text-sm text-gray-700 dark:text-gray-400">{entry.outdoorWorkout}</p>
         </div>
         <div className="flex flex-col gap-1">
             <Label>Pages Read</Label>
-            <p className="text-sm text-gray-700">TODO: ADD PAGES READ</p>
+            <p className="text-sm text-gray-700 dark:text-gray-400">TODO: ADD PAGES READ</p>
         </div>
-        <div className="flex gap-3">
-            <div className="flex items-center gap-1">
-                <Label>Drank Water (1 Gallon)</Label>
+        <div className="flex gap-2.5">
+            <div className="flex items-center gap-0.5">
+                <Label className="text-xs">Drank Water</Label>
                 {entry.drankWater ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
             </div>
-            <div className="flex items-center gap-1">
-                <Label>Followed Diet</Label>
+            <div className="flex items-center gap-0.5">
+                <Label className="text-xs">Followed Diet</Label>
                 {entry.followedDiet ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
             </div>
         </div>

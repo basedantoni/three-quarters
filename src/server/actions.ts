@@ -76,7 +76,6 @@ export async function createChallengeAndBook(formState: any, formData: FormData)
         };
 
         const challenge = await db.insert(challenges).values(newChallenge).returning({ id: challenges.id })
-        console.log(challenge)
 
         if (!challenge[0]) {
             return {

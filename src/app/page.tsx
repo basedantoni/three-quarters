@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/server/auth";
 import { CircleCheck } from "lucide-react";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -46,31 +47,26 @@ export default async function HomePage() {
     );
   }
 
-  const entryCountResult = await getEntryCount(challenge[0].id);
-  const entryCount = entryCountResult?.[0]?.count ?? 0; // Default to 0 if undefined
-
   const entries = await getEntriesByChallengeId(challenge[0].id);
-  console.log(entries);
-
   const dots = Array(75).fill(0);
-
   entries.map((entry, i) => {
     if (entry.completed) {
       dots[i] = entry.id
     }
   })
 
-  console.log(dots);
-
   return (
     <main className="relative flex min-h-svh flex-col items-center py-8 px-5 justify-between">
+      <div className="absolute top-3 right-4">
+        <ModeToggle />
+      </div>
       <div className="flex flex-col items-center gap-5">
         <h1 className="text-2xl font-bold">hello.</h1>
         <Card className="w-full max-w-[350px] flex flex-wrap gap-3.5 px-5 py-7 items-center justify-center">
           {dots.map((u, i) => {
             return Boolean(u)
-              ? <Link key={i} href={`/entries/${u}`} className="w-4 h-4 rounded-full bg-black"></Link> 
-              : <div key={i} className="w-4 h-4 rounded-full bg-slate-200"></div>;
+              ? <Link key={i} href={`/entries/${u}`} className="w-4 h-4 rounded-full bg-black dark:bg-white"></Link> 
+              : <div key={i} className="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800"></div>;
           })}
         </Card>
       </div>

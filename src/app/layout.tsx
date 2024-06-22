@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { GeistSans } from "geist/font/sans";
+import { ThemeProvider } from "@/context/theme-provider";
 
 export const metadata = {
   title: "Three Quarters",
@@ -19,8 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
       <body>
-        {children}
-        {modal}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          {modal}
+        </ThemeProvider>
         <div id="modal-root" />
       </body>
     </html>
