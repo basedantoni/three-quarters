@@ -4,6 +4,7 @@ import { desc, eq, count } from 'drizzle-orm';
 
 // Entries
 export const getAllEntries = async () => await db.select().from(entries)
+export const getEntryById = async (id: number) => await db.select().from(entries).where(eq(entries.id, id))
 export const getLatestEntry = async (challengeId: number) => {
     return await db.select().from(entries).where(eq(entries.challengeId, challengeId)).orderBy(desc(entries.createdAt)).limit(1)
 }

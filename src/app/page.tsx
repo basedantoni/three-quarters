@@ -77,6 +77,7 @@ export default async function HomePage() {
           <Link href={`/entries/create?challenge=${challenge[0].id}`}>+</Link>
         </Button>
       }
+      <Link href="/entries/15">1</Link>
     </main>
   );
 }
