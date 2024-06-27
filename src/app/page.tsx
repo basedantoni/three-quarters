@@ -87,7 +87,7 @@ export default async function HomePage() {
       <Menubar className="w-full py-8 px-8 gap-3 justify-center">
         <AddEntryButton disabled={isSameDayUTC(lastEntryDate, new Date())} challengeId={challenge[0].id} />
         <Button size={"icon"} asChild>
-          <Link href={`/profile`}><UserCircle className="h-6 w-6" /></Link>
+          <Link href={`/me`}><UserCircle className="h-6 w-6" /></Link>
         </Button>
       </Menubar>
     </main>
