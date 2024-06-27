@@ -14,33 +14,33 @@ export default function EntryModal({ entry }: { entry: Entry }) {
 
   return (
     <Modal ref={modalRef}>
-      <div className="flex flex-col gap-4 pb-5">
-        <div className="flex flex-col gap-1">
-            <Label className="text-xl font-bold">{formattedDate}</Label>
-        </div>
-        <div className="flex flex-col gap-1">
-            <Label>Indoor Workout</Label>
-            <p className="text-sm text-gray-700 dark:text-gray-400">{entry.indoorWorkout}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-            <Label>Outdoor Workout</Label>
-            <p className="text-sm text-gray-700 dark:text-gray-400">{entry.outdoorWorkout}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-            <Label>Pages Read</Label>
-            <p className="text-sm text-gray-700 dark:text-gray-400">TODO: ADD PAGES READ</p>
-        </div>
-        <div className="flex gap-2.5">
-            <div className="flex items-center gap-0.5">
-                <Label className="text-xs">Drank Water</Label>
-                {entry.drankWater ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
+        <div className="flex flex-col gap-4 pb-5">
+            <div className="flex flex-col gap-1">
+                <Label className="text-xl font-bold">{formattedDate}</Label>
             </div>
-            <div className="flex items-center gap-0.5">
-                <Label className="text-xs">Followed Diet</Label>
-                {entry.followedDiet ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
+            <div className="flex flex-col gap-1">
+                <Label>Indoor Workout</Label>
+                <p className="text-sm text-gray-700 dark:text-gray-400">{entry.indoorWorkout}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+                <Label>Outdoor Workout</Label>
+                <p className="text-sm text-gray-700 dark:text-gray-400">{entry.outdoorWorkout}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+                <Label>Pages Read</Label>
+                <p className="text-sm text-gray-700 dark:text-gray-400">TODO: ADD PAGES READ</p>
+            </div>
+            <div className="flex gap-2.5">
+                <div className="flex items-center gap-0.5">
+                    <Label className="text-xs">Drank Water</Label>
+                    {entry.drankWater ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
+                </div>
+                <div className="flex items-center gap-0.5">
+                    <Label className="text-xs">Followed Diet</Label>
+                    {entry.followedDiet ? <CircleCheck className="stroke-green-500 h-4 w-4 stroke-1" /> : <CircleX className="h-4 w-4 stroke-1" />}
+                </div>
             </div>
         </div>
-      </div>
     </Modal>
   );
 }

@@ -1,13 +1,27 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getLatestChallenge, getEntryCount, getLatestEntry, getEntriesByChallengeId } from "@/server/db/query";
+import { Menubar } from "@/components/ui/menubar"
+import { getLatestChallenge, getLatestEntry, getEntriesByChallengeId } from "@/server/db/query";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { auth } from "@/server/auth";
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, PlusIcon, UserCircle } from "lucide-react";
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
 export const dynamic = "force-dynamic";
+
+function AddEntryButton( { disabled, challengeId } : { disabled: boolean, challengeId: number } ) {
+  return disabled
+    ? 
+    <div className="flex gap-2 items-center">
+      <p className="text-lg">You completed todays challenge</p>
+      <CircleCheck className="h-4 w-4" />
+    </div>
+    :
+    <Button size={"icon"} asChild>
+      <Link href={`/entries/create?challenge=${challengeId}`}><PlusIcon className="h-6 w-6" /></Link>
+    </Button>
+}
 
 export default async function HomePage() {
   const session = await auth()
@@ -62,7 +76,7 @@ export default async function HomePage() {
       </div>
       <div className="flex flex-col items-center gap-5">
         <h1 className="text-2xl font-bold">hello.</h1>
-        <Card className="w-full max-w-[350px] flex flex-wrap gap-3.5 px-5 py-7 items-center justify-center">
+        <Card className="w-full max-w-[350px] flex flex-wrap gap-3 px-5 py-8 items-center justify-center">
           {dots.map((u, i) => {
             return Boolean(u)
               ? <Link key={i} href={`/entries/${u}`} className="w-4 h-4 rounded-full bg-black dark:bg-white"></Link> 
@@ -70,17 +84,12 @@ export default async function HomePage() {
           })}
         </Card>
       </div>
-      {isSameDayUTC(lastEntryDate, new Date()) 
-        ? 
-        <div className="flex gap-2 items-center">
-          <p className="text-lg">You completed todays challenge</p>
-          <CircleCheck className="h-4 w-4" />
-        </div>
-        :
-        <Button asChild size={"round"}>
-          <Link href={`/entries/create?challenge=${challenge[0].id}`}>+</Link>
+      <Menubar className="w-full py-8 px-8 gap-3 justify-center">
+        <AddEntryButton disabled={isSameDayUTC(lastEntryDate, new Date())} challengeId={challenge[0].id} />
+        <Button size={"icon"} asChild>
+          <Link href={`/profile`}><UserCircle className="h-6 w-6" /></Link>
         </Button>
-      }
+      </Menubar>
     </main>
   );
 }
