@@ -13,10 +13,9 @@ export const dynamic = "force-dynamic";
 function AddEntryButton( { disabled, challengeId } : { disabled: boolean, challengeId: number } ) {
   return disabled
     ? 
-    <div className="flex gap-2 items-center">
-      <p className="text-lg">You completed todays challenge</p>
-      <CircleCheck className="h-4 w-4" />
-    </div>
+    <Button disabled size={"icon"}>
+      <CircleCheck className="h-6 w-6" />
+    </Button>
     :
     <Button size={"icon"} asChild>
       <Link href={`/entries/create?challenge=${challengeId}`}><PlusIcon className="h-6 w-6" /></Link>
@@ -84,7 +83,7 @@ export default async function HomePage() {
           })}
         </Card>
       </div>
-      <Menubar className="w-full py-8 px-8 gap-3 justify-center">
+      <Menubar className="w-full max-w-[350px] py-8 px-8 gap-3 justify-center">
         <AddEntryButton disabled={isSameDayUTC(lastEntryDate, new Date())} challengeId={challenge[0].id} />
         <Button size={"icon"} asChild>
           <Link href={`/me`}><UserCircle className="h-6 w-6" /></Link>
